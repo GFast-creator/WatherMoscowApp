@@ -1,0 +1,116 @@
+﻿@model WeatherViewModel
+@{
+    ViewData["Title"] = "Главная";
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">База данных</h1>
+    <form id="filter" method="get" asp-action="Index" asp-controller="Database">
+        <label for="month">Выберите месяц:</label>
+        <select name="month" id="month">
+            @foreach (var month in ViewBag.DistinctMonth)
+            {
+                @if (Model.Month == month)
+                {
+                    <option value="@month" selected>@ViewBag.ListOfMonths[month - 1]</option>
+                }
+                else
+                {
+                    <option value="@month">@ViewBag.ListOfMonths[month - 1]</option>
+                }
+            }
+        </select>
+        <select name="year" id="year">
+            @foreach (var year in ViewBag.DistinctYears)
+            {
+                @if (year == 0)
+                {
+                    if (year == Model.Year)
+                    {
+                        <option value="@year" selected> - </option>
+                    }
+                    else
+                    {
+                        <option value="@year"></option>
+                    }
+                }
+                else if (Model.Year == year)
+                {
+                    <option value="@year" selected>@year год</option>
+                }
+                else
+                {
+                    <option value="@year">@year год</option>
+                }
+            }
+        </select>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Дата</th>
+                    <th>Время</th>
+                    <th>Температура</th>
+                    <th>Относительная влажность (%)</th>
+                    <th>Точка росы</th>
+                    <th>Атмосферное давление (мм рт. ст.)</th>
+                    <th>Направление ветра</th>
+                    <th>Скорость ветра (м/с)</th>
+                    <th>Облачность (%)</th>
+                    <th>Нижняя граница облачности</th>
+                    <th>Видимость (км)</th>
+                    <th>Погодные явления</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var entity in Model.Entities)
+                {
+                    <tr>
+                        <td>@entity.Id</td>
+                        <td>@entity.Date</td>
+                        <td>@entity.Time</td>
+                        <td>@entity.Temperature</td>
+                        <td>@entity.RelativeHumidity</td>
+                        <td>@entity.DewPoint</td>
+                        <td>@entity.AtmosphericPressure</td>
+                        <td>@entity.WindDirection</td>
+                        <td>@entity.WindSpeed</td>
+                        <td>@entity.Cloudiness</td>
+                        <td>@entity.H</td>
+                        <td>@entity.Visibility</td>
+                        <td>@entity.WeatherPhenomena</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <label for="page">Выберите страницу:</label>
+        <select id="courentPage" name="courentPage">
+            @foreach (var page1 in ViewBag.Pages)
+            {
+                if (page1 == Model.CourentPage)
+                {
+                    <option value="@page1" selected>@page1</option>
+                }
+                else
+                {
+                    <option value="@page1">@page1</option>
+                }
+                
+            }
+        </select>
+    </form>
+    <script>
+        let f = function () {
+            document.getElementById("courentPage").value = 1;
+            document.getElementById("filter").submit(); // Отправляем форму после изменения select
+        }
+        document.getElementById("month").addEventListener("change", f);
+        document.getElementById("year").addEventListener("change", f);
+        document.getElementById("courentPage").addEventListener("change", function () {
+            document.getElementById("filter").submit(); // Отправляем форму после изменения select
+        });
+    </script>
+</div>

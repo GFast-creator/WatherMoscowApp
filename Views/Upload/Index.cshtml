@@ -1,0 +1,17 @@
+﻿@model UploadResponceModel
+
+<div class="text-center">
+    <h1 class="display-4">Загрузка базы</h1>
+    <form method="post" enctype="multipart/form-data" asp-action="UploadExcelFiles" asp-controller="Upload">
+        <div class="form-group">
+            <label for="excelFile">Выберите файл Excel:</label>
+            <br />
+            <input type="file" name="files" class="form-control-file" id="excelFile" accept=".xls, .xlsx" required multiple>
+        </div>
+        <button type="submit" class="btn btn-primary">Загрузить</button>
+    </form>
+    @if (Model != null)
+    {
+        <p>@Model.Response</p>
+    }
+</div>
